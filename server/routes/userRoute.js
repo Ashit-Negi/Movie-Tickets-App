@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/userModels");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const authMiddleware = require("../middlewares/authMiddleware");
 
 //route for register
 
@@ -9,7 +11,7 @@ router.post("/register", async (req, res) => {
   try {
     const userExists = await User.findOne({ email: req.body.email }); // this is to find that email already exists or not
     if (userExists) {
-      res.send({
+      return res.send({
         success: false,
         message: "user is already exists",
       });
@@ -56,11 +58,21 @@ router.post("/login", async (req, res) => {
         message: "Sorry invalid password",
       });
     }
+    const token = jwt.sign({userId : user._id} , `${process.env.SECRET_KEY}` )
     res.send({
       success: true,
       message: "user Logged in",
+      user:user,
+      token: token,
     });
-  } catch (error) {}
+  } catch (error) {
+    console.log(error)
+  }
 });
+
+router.get("/get-current-user",authMiddleware, async(req , res)=>{
+
+})
+
 
 module.exports = router;

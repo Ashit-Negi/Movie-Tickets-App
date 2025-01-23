@@ -3,20 +3,32 @@ import { Form, Button, Input, message } from "antd";
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { LoginUser } from "../apicalls/userCall";
+import { useDispatch } from "react-redux";
+import { setUser } from "../redux/UserSlice";
 
 function Login() {
+  const dispatch = useDispatch()
   const submitForm = async(value)=>{
     try {
-      const response = await LoginUser(value)
-      if(response.success){
-        message.success(response.message)
+      const res = await LoginUser(value)
+
+      if(res.success){
+
+        message.success(res.message)
+
+        localStorage.setItem("token" , res.token)
+        dispatch(setUser(res.user))
+
+
         // this is for going directly to the home page after login successful
-        window.location.href = "/"
+        // window.location.href = "/"
+
       }else{
-        message.error(response.message)
+        message.error(res.message)
       }
-      console.log(response)
-    } catch (error) {
+      // console.log(res)
+    } 
+    catch (error) {
       console.log(error)
     }
   }
