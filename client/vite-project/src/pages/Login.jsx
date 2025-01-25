@@ -21,7 +21,7 @@ function Login() {
 
 
         // this is for going directly to the home page after login successful
-        // window.location.href = "/"
+        window.location.href = "/"
 
       }else{
         message.error(res.message)
