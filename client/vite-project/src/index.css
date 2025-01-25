@@ -11,3 +11,48 @@ h2 {
   margin-bottom: 20px; /* Space below the heading */
   color: #333; /* Optional: Heading color */
 }
+
+/* ProtectedRoute */
+
+/* Header styling */
+.custom-header {
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Keep content spaced between */
+  padding: 0 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Subtle darker shadow */
+}
+
+/* Title styling */
+.header-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Menu styling */
+.header-menu {
+  border: none; /* Remove border */
+  display: flex; /* Ensure the items are displayed horizontally */
+  align-items: center;
+ /* margin-left: auto; */
+  padding: 0 16px;
+  
+}
+.header-menu .ant-menu-item {
+  display: inline-block; /* Make sure the items are side by side */
+  
+}
+
+
+/* Hover effect on menu items */
+.header-menu .ant-menu-item:hover {
+  background-color: rgba(255, 255, 255, 0.1); /* Light hover effect */
+  transform: scale(1.05); /* Slightly enlarge the item on hover */
+  transition: all 0.3s ease; /* Smooth transition */
+}
