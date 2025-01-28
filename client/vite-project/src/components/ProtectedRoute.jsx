@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { hideLoading, showLoading } from "../redux/LoadersSlice";
 import { getCurrentUser } from "../apicalls/userCall";
 import { setUser } from "../redux/UserSlice";
-import { Layout, Menu } from "antd";
+import { Layout, Menu, message } from "antd";
 import { Header } from "antd/es/layout/layout";
 import "../index.css";
 import {
@@ -31,7 +31,13 @@ function ProtectedRoute({ children }) {
       // nested object
       children: [
         {
-          label: "Profile",
+          label: (
+            <span onClick={()=>{
+              user.isAdmin ? navigate("/admin") : navigate("/profile")
+            }}>
+              My Profile
+            </span>
+          ),
           icon: <ProfileOutlined />,
         },
         {
@@ -50,20 +56,35 @@ function ProtectedRoute({ children }) {
     try {
       dispatch(showLoading);
       const response = await getCurrentUser();
-      dispatch(setUser(response.data));
+      if(response.success){
+        dispatch(setUser(response.data));
+
+// here we have to check for admin
+        if(!response.data.isAdmin){
+           message.error("You are not authorized")
+           navigate('/')
+        }
+      }else{
+        dispatch(setUser(null)),
+        message.error(response.message),
+        localStorage.removeItem("token"),
+        navigate("/login");
+      }
       dispatch(hideLoading);
     } catch (error) {
-      console.log(error);
+      dispatch(hideLoading)
+      dispatch(setUser(null))
+      message.error(error.message)
     }
   };
-
+ 
   useEffect(() => {
     if (localStorage.getItem("token")) {
       getValidUser();
     } else {
       navigate("./login");
     }
-  });
+  },[]);
 
   return (
     user && (
@@ -78,7 +99,7 @@ function ProtectedRoute({ children }) {
           />
         </Header>
 
-        <div style={{ padding: 30, minHeight: 380, background: "#d3d3d3" }}>
+        <div style={{ padding: 30, background: "#d3d3d", height: "100vh" }}>
           {children}
         </div>
       </Layout>

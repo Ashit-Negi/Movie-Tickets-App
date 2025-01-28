@@ -7,6 +7,8 @@ import { useSelector } from 'react-redux'
 import { Spin } from 'antd';
 import './App.css';
 import ProtectedRoute from './components/ProtectedRoute'
+import Admin from './pages/Admin'
+import Profile from './pages/Profile'
 
 function App() {
   const {loading}= useSelector((state)=>state.loader)
@@ -24,6 +26,12 @@ function App() {
           <Route path='/' element={<ProtectedRoute><Home /></ProtectedRoute>}/>
           <Route path='/login' element={<Login />}/>
           <Route path='/register' element={<Register />}/>
+          <Route path='/admin' element={<ProtectedRoute><Admin /></ProtectedRoute>} />;
+          <Route path='/profile' element={<ProtectedRoute><Profile /> </ProtectedRoute>}  />
+
+
+
+
         </Routes>
       </BrowserRouter>
     </div>
