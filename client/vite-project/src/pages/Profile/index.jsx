@@ -1,7 +1,7 @@
 import React, { Children } from 'react'
 import { Tabs } from 'antd'
 import { useSelector } from 'react-redux'
-import Theatre from './Theatre'
+import Theatre from './Theatrelist'
 import Booking from './Booking'
 
 
